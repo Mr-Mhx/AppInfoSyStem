@@ -120,23 +120,44 @@ public class AppInfoServiceImpl implements AppInfoService {
         return appInfoMapper.selectOne(appInfo);
     }
 
+    @Override
+    public AppInfo queryById(Long id) {
+        AppInfo appInfo = appInfoMapper.selectByPrimaryKey(id);
+        //填充属性
+        binData(Arrays.asList(appInfo));
+        return appInfo;
+    }
 
+    /**
+     * 新增
+     * @param appInfo
+     * @return
+     */
     @Override
     @Transactional
     public int insertApp(AppInfo appInfo) {
         return appInfoMapper.insert(appInfo);
     }
 
-    @Override
-    public AppInfo queryById(Long id) {
-        AppInfo appInfo = appInfoMapper.selectByPrimaryKey(id);
-        binData(Arrays.asList(appInfo));
-        return appInfo;
-    }
-
+    /**
+     * 修改
+     * @param appInfo
+     * @return
+     */
     @Override
     @Transactional
     public int updateApp(AppInfo appInfo) {
         return appInfoMapper.updateByPrimaryKeySelective(appInfo);
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public int deleteApp(Long id) {
+        return appInfoMapper.deleteByPrimaryKey(id);
     }
 }

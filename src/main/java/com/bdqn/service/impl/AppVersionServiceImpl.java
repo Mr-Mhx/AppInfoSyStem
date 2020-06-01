@@ -81,4 +81,29 @@ public class AppVersionServiceImpl implements AppVersionService {
 
         return appVersionMapper.insert(appVersion);
     }
+
+    /**
+     * 修改版本
+     * @return
+     */
+    @Override
+    @Transactional
+    public int updateVersion(AppVersion version) {
+
+        return appVersionMapper.updateByPrimaryKeySelective(version);
+    }
+
+    /**
+     * 删除版本
+     * @param appid
+     * @return
+     */
+    @Override
+    public int deleteByAppId(Long appid) {
+        Example example = new Example(AppVersion.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("appid", appid);
+        return appVersionMapper.deleteByExample(example);
+    }
+
 }

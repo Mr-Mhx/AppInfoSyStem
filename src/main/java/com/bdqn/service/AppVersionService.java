@@ -14,4 +14,11 @@ public interface AppVersionService {
 
     //新增版本
     public int insertVersion(AppVersion appVersion);
+
+    //修改版本
+    public int updateVersion(AppVersion version);
+
+    //根据 appid 删除版本
+    public int deleteByAppId(Long appid);
+
 }

@@ -1,9 +1,11 @@
 package com.bdqn.web;
 
 import com.bdqn.entity.AppInfo;
+import com.bdqn.entity.AppVersion;
 import com.bdqn.entity.DevUser;
 import com.bdqn.service.AppCategoryService;
 import com.bdqn.service.AppInfoService;
+import com.bdqn.service.AppVersionService;
 import com.bdqn.service.DataDictionaryService;
 import com.bdqn.utils.JsonResult;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/appInfoCon")
@@ -31,6 +34,8 @@ public class AppInfoController {
     @Resource
     private DataDictionaryService dataDictionaryService;
 
+    @Resource
+    private AppVersionService appVersionService;
 
     /**
      * 01
@@ -131,12 +136,11 @@ public class AppInfoController {
      * @param session
      * @param id
      * @param flag
-     * @param a_logopicpath
      * @return
      */
     @GetMapping("/delfile")
     @ResponseBody
-    public JsonResult delfile(HttpSession session, Long id, String flag, MultipartFile a_logopicpath) {
+    public JsonResult delfile(HttpSession session, Long id, String flag) {
         //删除图片
         if (flag.equals("logo")) {
             //根据 id查询数据
@@ -192,7 +196,76 @@ public class AppInfoController {
     }
 
 
+    /**
+     * 删除 APP 和 对应历史版本
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/delapp")
+    @ResponseBody
+    public JsonResult delapp(Long id) {
+        if (id != 0 && id != null) {
+            //删除 APP
+            int app = appInfoService.deleteApp(id);
 
+            //删除 APP 历史版本
+            appVersionService.deleteByAppId(id);
+
+            if (app > 0) {
+                return new JsonResult(true);
+            }
+        }
+        return new JsonResult(false);
+    }
+
+
+    /**
+     * 查看 APP信息 和历史版本
+     * @param model
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/appview/{id}")
+    public String appinfoview(Model model,@PathVariable(value = "id") Long id) {
+
+        //存储 APP 信息
+        AppInfo appInfo = appInfoService.queryById(id);
+        model.addAttribute("appInfo", appInfo);
+
+
+        // 存储 历史版本 信息
+        List<AppVersion> appVersions = appVersionService.queryByAppid(id);
+        model.addAttribute("appVersionList", appVersions);
+
+        return "developer/appinfoview";
+    }
+
+
+    /**
+     * 上架 或 下架
+     *
+     * @return
+     */
+    @RequestMapping(value = "/sale/{saleSwitch}/{appId}")
+    public JsonResult sale(@PathVariable(value = "appId") Long appId, @PathVariable(value = "saleSwitch") String saleSwitch) {
+     /*   AppInfo appInfo = new AppInfo();
+        appInfo.setId(appId);
+
+        if (saleSwitch.equals("open")) {
+            //上架
+            appInfo.setStatus(4L);
+            appInfo.setOnsaledate(new Date());
+            appInfoService.updateApp(appInfo);
+            return new JsonResult(true);
+        } else if(saleSwitch.equals("close")){
+            //下架
+            appInfo.setStatus(5L);
+            appInfo.setOffsaledate(new Date());
+            appInfoService.updateApp(appInfo);
+            return new JsonResult(true);
+        }*/
+        return new JsonResult(false);
+    }
 
 
     /**
@@ -203,6 +276,7 @@ public class AppInfoController {
     @GetMapping("/apkexist")
     @ResponseBody
     public JsonResult apkname(String apkname) {
+
         AppInfo appInfo = appInfoService.queryApkexist(apkname);
         if (appInfo == null) {
             return new JsonResult(true);

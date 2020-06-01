@@ -21,4 +21,7 @@ public interface AppInfoService {
     //修改
     public int updateApp(AppInfo appInfo);
 
+    //删除
+    public int deleteApp(Long id);
+
 }

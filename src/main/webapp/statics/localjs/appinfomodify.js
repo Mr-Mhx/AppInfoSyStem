@@ -118,7 +118,7 @@ $(function(){
 	if(logoPicPath == null || logoPicPath == "" ){
 		$("#uploadfile").show();
 	}else{
-		$("#logoFile").append("<p><img src=\""+logoPicPath.substring(14)+"?m="+Math.random()+"\" width=\"100px;\"/> &nbsp;&nbsp;"+
+		$("#logoFile").append("<p><img src=\""+logoPicPath+"?m="+Math.random()+"\" width=\"100px;\"/> &nbsp;&nbsp;"+
 							"<a href=\"javascript:;\" onclick=\"delfile('"+id+"');\">删除</a></p>");
 		
 	}
