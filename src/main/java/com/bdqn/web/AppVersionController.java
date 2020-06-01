@@ -1,7 +1,9 @@
 package com.bdqn.web;
 
+import com.bdqn.entity.AppInfo;
 import com.bdqn.entity.AppVersion;
 import com.bdqn.entity.DevUser;
+import com.bdqn.service.AppInfoService;
 import com.bdqn.service.AppVersionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,8 @@ public class AppVersionController {
     @Resource
     private AppVersionService appVersionService;
 
-
+    @Resource
+    private AppInfoService appInfoService;
     /**
      * 进入新增历史版本页面  显示历史版本
      * @param model
@@ -59,12 +62,21 @@ public class AppVersionController {
             DevUser devUserSession = (DevUser) session.getAttribute("devUserSession");
 
             if (appVersion != null) {
+                /**
+                 * 新增版本
+                 */
                 appVersion.setCreatedby(devUserSession.getId());
                 appVersion.setCreationdate(new Date());
                 appVersion.setApkfilename(filename);
                 appVersion.setApklocpath(path);
                 appVersion.setDownloadlink("/statics/uploadfiles/"+filename);
                 appVersionService.insertVersion(appVersion);
+
+                //修改/添加  最新版本号
+                AppInfo appInfo = new AppInfo();
+                appInfo.setId(appVersion.getAppid());
+                appInfo.setVersionid(appVersion.getId());
+                appInfoService.updateApp(appInfo);
             }
 
         }
