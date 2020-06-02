@@ -117,16 +117,24 @@ public class AppVersionController {
      * @return
      */
     @RequestMapping(value = "/appversionmodifysave")
-    public String appversionmodifysave(HttpSession session, AppVersion appVersion, MultipartFile attach) throws IOException {
+    public String appversionmodifysave(HttpSession session, AppVersion appVersion, MultipartFile attach) {
 
         //文件上传
-        if (attach != null) {
+        if (!attach.isEmpty()) {
             String path = session.getServletContext().getRealPath("/statics/uploadfiles/");
             String filename = attach.getOriginalFilename();
-            attach.transferTo(new File(path, filename));  //上传
+            try {
+                attach.transferTo(new File(path, filename));  //上传
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             appVersion.setApkfilename(filename);
             appVersion.setApklocpath(path);
             appVersion.setDownloadlink("/statics/uploadfiles/" + filename);
+        }else{
+            appVersion.setDownloadlink("");
+            appVersion.setApkfilename("");
+            appVersion.setApklocpath("");
         }
 
         //获取当前操作人员

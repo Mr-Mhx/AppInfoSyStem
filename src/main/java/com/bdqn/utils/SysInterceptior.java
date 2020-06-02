@@ -5,6 +5,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 拦截处理器
+ */
 public class SysInterceptior implements HandlerInterceptor {
 
 

@@ -61,9 +61,13 @@
     <!--拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
+            <!--拦截所有请求-->
             <mvc:mapping path="/**"/>
+            <!--不拦截的请求-->
             <mvc:exclude-mapping path="/dev/login"/>
+            <!--不拦截的静态资源-->
             <mvc:exclude-mapping path="/statics/**"/>
+            <!--拦截器类-->
             <bean class="com.bdqn.utils.SysInterceptior"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
