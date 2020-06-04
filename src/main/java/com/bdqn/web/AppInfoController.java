@@ -247,8 +247,9 @@ public class AppInfoController {
      * @return
      */
     @RequestMapping(value = "/sale/{saleSwitch}/{appId}")
+    @ResponseBody
     public JsonResult sale(@PathVariable(value = "appId") Long appId, @PathVariable(value = "saleSwitch") String saleSwitch) {
-     /*   AppInfo appInfo = new AppInfo();
+        AppInfo appInfo = new AppInfo();
         appInfo.setId(appId);
 
         if (saleSwitch.equals("open")) {
@@ -263,7 +264,7 @@ public class AppInfoController {
             appInfo.setOffsaledate(new Date());
             appInfoService.updateApp(appInfo);
             return new JsonResult(true);
-        }*/
+        }
         return new JsonResult(false);
     }
 

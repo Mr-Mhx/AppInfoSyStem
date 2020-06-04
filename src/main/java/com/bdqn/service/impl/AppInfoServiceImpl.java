@@ -71,7 +71,7 @@ public class AppInfoServiceImpl implements AppInfoService {
             criteria.andEqualTo("categorylevel3", info.getCategorylevel3());
         }
 
-        // 查看开发人呢元所管理的APP
+        // 查看开发人员所管理的APP
         criteria.andEqualTo("devid", devid);
         List<AppInfo> appInfoList = appInfoMapper.selectByExample(example);
 

@@ -72,7 +72,10 @@ $(".modifyVersion").on("click",function(){
 		if(versionid == null || versionid == ""){
 			alert("该APP应用无版本信息，请先增加版本信息！");
 		}else{
-			window.location.href="/versionCon/appversionmodify/"+ versionid + "/"+ appinfoid;
+			window.loca
+
+
+			tion.href="/versionCon/appversionmodify/"+ versionid + "/"+ appinfoid;
 		}
 	}else{
 		alert("该APP应用的状态为：【"+obj.attr("statusname")+"】,不能修改其版本信息，只可进行【新增版本】操作！");
@@ -103,8 +106,8 @@ $(document).on("click",".saleSwichOpen,.saleSwichClose",function(){
 
 var saleSwitchAjax = function(appId,obj){
 	$.ajax({
-		type:"PUT",
-		url:appId+"/sale.json",
+		type:"GET",
+		url:"/appInfoCon/sale/"+$(obj).attr("saleSwitch")+"/"+appId,
 		dataType:"json",
 		success:function(data){
 			/*
@@ -113,8 +116,8 @@ var saleSwitchAjax = function(appId,obj){
 			 * appId:appId
 			 * errorCode:param000001
 			 */
-			if(data.errorCode === '0'){
-				if(data.resultMsg === "success"){//操作成功
+			// if(data.success){
+				if(data.success){//操作成功
 					if("open" === obj.attr("saleSwitch")){
 						//alert("恭喜您，【"+obj.attr("appsoftwarename")+"】的【上架】操作成功");
 						$("#appInfoStatus" + obj.attr("appinfoid")).html("已上架");
@@ -144,20 +147,20 @@ var saleSwitchAjax = function(appId,obj){
 						$("#appInfoStatus" + obj.attr("appinfoid")).hide();
 						$("#appInfoStatus" + obj.attr("appinfoid")).slideDown(300);
 					}
-				}else if(data.resultMsg === "failed"){//删除失败
+				}else{//删除失败
 					if("open" === obj.attr("saleSwitch")){
-						alert("恭喜您，【"+obj.attr("appsoftwarename")+"】的【上架】操作失败");
+						alert("很抱歉，【"+obj.attr("appsoftwarename")+"】的【上架】操作失败");
 					}else if("close" === obj.attr("saleSwitch")){
-						alert("恭喜您，【"+obj.attr("appsoftwarename")+"】的【下架】操作失败");
+						alert("很抱歉，【"+obj.attr("appsoftwarename")+"】的【下架】操作失败");
 					}
 				}
-			}else{
-				if(data.errorCode === 'exception000001'){
-					alert("对不起，系统出现异常，请联系IT管理员");
-				}else if(data.errorCode === 'param000001'){
-					alert("对不起，参数出现错误，您可能在进行非法操作");
-				}
-			}
+			// }else{
+			// 	if(data.errorCode === 'exception000001'){
+			// 		alert("对不起，系统出现异常，请联系IT管理员");
+			// 	}else if(data.errorCode === 'param000001'){
+			// 		alert("对不起，参数出现错误，您可能在进行非法操作");
+			// 	}
+			// }
 		},
 		error:function(data){
 			if("open" === obj.attr("saleSwitch")){
